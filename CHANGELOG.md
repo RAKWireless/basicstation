@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.8.5 (2025-09-15)
+
+* Remove dependency from balenalib images
+* Remove balena-specific options
+
 ## 2.8.4 (2024-08-27)
 
 * Add options to disable LBT, duty-cycle and dwell-time limitations (development option only)

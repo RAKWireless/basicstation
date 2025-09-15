@@ -1,6 +1,6 @@
 # LoRa Basics™ Station for Docker
 
-This project deploys a LoRaWAN gateway with Basics™ Station Packet Forward protocol using Docker or Balena.io. It runs on a PC, a Raspberry Pi, Compute Module or balenaFin with SX1301, SX1302, SX1303 or SX1308 LoRa concentrators (e.g. RAK831, RAK833, RAK2245, RAK2246, RAK2247, RAK2287, RAK5146, Seeed WM1302 and IMST iC880a among others).
+This project deploys a LoRaWAN gateway with Basics™ Station Packet Forward protocol using Docker. It runs on a PC, a Raspberry Pi or a Compute Module with SX1301, SX1302, SX1303 or SX1308 LoRa concentrators (e.g. RAK831, RAK833, RAK2245, RAK2246, RAK2247, RAK2287, RAK5146, Seeed WM1302 and IMST iC880a among others).
 
 ## Table of Contents
 
@@ -13,8 +13,6 @@ This project deploys a LoRaWAN gateway with Basics™ Station Packet Forward pro
 - [Deploy the code](#deploy-the-code)
     - [Via docker-compose](#via-docker-compose)
     - [Build the image not required](#build-the-image-not-required)
-    - [Via Balena Deploy](#via-balena-deploy)
-    - [Via Balena-CLI](#via-balena-cli)
 - [Configure the Gateway](#configure-the-gateway)
     - [Basics™ Station Service Variables](#basics-station-service-variables)
     - [Define your MODEL & DESIGN](#define-your-model--design)
@@ -40,7 +38,7 @@ This project deploys a LoRaWAN gateway with Basics™ Station Packet Forward pro
 
 ## Introduction
 
-Deploy a LoRaWAN gateway running the Basics™ Station Semtech Packet Forward protocol in a docker container or as a balena.io application.  The Basics™ Station protocol enables the LoRa gateways with a reliable and secure communication between the gateways and the cloud and it is becoming the standard Packet Forward protocol used by most of the LoRaWAN operators.
+Deploy a LoRaWAN gateway running the Basics™ Station Semtech Packet Forward protocol in a docker container.  The Basics™ Station protocol enables the LoRa gateways with a reliable and secure communication between the gateways and the cloud and it is becoming the standard Packet Forward protocol used by most of the LoRaWAN operators.
 
 Main features:
 
@@ -112,13 +110,9 @@ If you are going to use docker to deploy the project, you will need:
 * An OS running your host (Linux or MacOS for AMD64 systems, Raspberry Pi OS, Ubuntu OS for ARM,...)
 * Docker (and optionally docker-compose) on the machine (see below for installation instructions)
 
-If you are going to use this image with Balena, you will need:
+You will also need:
 
-* A balenaCloud account ([sign up here](https://dashboard.balena-cloud.com/))
-
-On both cases you will also need:
-
-* A The Things Stack V3 account [here](https://console.cloud.thethings.network/)
+* An LNS (you can use a free a TTN account [here](https://console.cloud.thethings.network/))
 * [balenaEtcher](https://balena.io/etcher) to burn the OS image on the SD card of eMMC for SBC if you have not already done so
 
 Once all of this is ready, you are able to deploy this repository following instructions below.
@@ -126,7 +120,7 @@ Once all of this is ready, you are able to deploy this repository following inst
 
 ## Installing docker & docker compose on the OS
 
-If you are going to run this project directly using docker (not using Balena) then you will need to install docker on the OS first. Instruction on how to install docker can be found in the official documentation here: https://docs.docker.com/engine/install/. Below you have a summary of the steps required to install it using the convenience script provided by docker:
+If you are going to run this project directly using docker then you will need to install docker on the OS first. Instruction on how to install docker can be found in the official documentation here: https://docs.docker.com/engine/install/. Below you have a summary of the steps required to install it using the convenience script provided by docker:
 
 ```
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -214,34 +208,12 @@ The included build script in the root folder can be user to build all architectu
 REGISTRY="registry.example.com/basicstation" ./build.sh --push
 ```
 
-
-
-### Via [Balena Deploy](https://www.balena.io/docs/learn/deploy/deploy-with-balena-button/)
-
-Running this project is as simple as deploying it to a balenaCloud application. You can do it in just one click by using the button below:
-
-[![balena deploy button](https://www.balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/xoseperez/basicstation-docker)
-
-Follow instructions, click **Add a Device** and flash an SD card with that OS image dowloaded from balenaCloud. Enjoy the magic 🌟Over-The-Air🌟!
-
-
-### Via [Balena-CLI](https://www.balena.io/docs/reference/balena-cli/)
-
-If you are a balena CLI expert, feel free to use balena CLI.
-
-- Sign up on [balena.io](https://dashboard.balena.io/signup)
-- Create a new application on balenaCloud.
-- Clone this repository to your local workspace.
-- Using [Balena CLI](https://www.balena.io/docs/reference/cli/), push the code with `balena push <application-name>`
-- See the magic happening, your device is getting updated 🌟Over-The-Air🌟!
-
-
 ## Configure the Gateway
 
 
 ### Basics™ Station Service Variables
 
-These variables you can set them under the `environment` tag in the `docker-compose.yml` file or using an environment file (with the `env_file` tag). If you are using Balena you can also set them in the `Device Variables` tab for the device (or globally for the whole application). Only `MODEL` and `TC_KEY` are mandatory.
+These variables you can set them under the `environment` tag in the `docker-compose.yml` file or using an environment file (with the `env_file` tag). Only `MODEL` and `TC_KEY` are mandatory.
 
 Variable Name | Value | Description | Default
 ------------ | ------------- | ------------- | -------------
@@ -309,7 +281,7 @@ The model is defined depending on the version of the LoRa concentrator chip: `SX
 * Concentrator modules: IC880A, R11E-LORA8, R11E-LORA9, RAK2245, RAK2246, RAK2247, RAK2287, RAK5146, RAK831, RAK833, WM1302
 * RAK WisGate Development gateways: RAK7243, RAK7243C, RAK7244, RAK7244C, RAK7246, RAK7248, RAK7248C, RAK7271, RAK7371
 
-If the module is not on the list check the manufacturer to see which one to use. It's important to set the `MODEL` variable (in you `docker-compose.yml` file or in balenaCloud) to the correct one. The default model is the `SX1301`.
+If the module is not on the list check the manufacturer to see which one to use. It's important to set the `MODEL` variable (in you `docker-compose.yml` file) to the correct one. The default model is the `SX1301`.
 
 Based on the `MODEL` and the `INTERFACE` (SPI or USB), the service will try to guess the concentrator design (see https://doc.sm.tc/station). 
 
@@ -337,8 +309,6 @@ Or query what will the EUI be using the chip ID (only for Corecell concentrators
 ```
 docker run -it --privileged --rm -e GATEWAY_EUI_SOURCE=chip xoseperez/basicstation:latest gateway_eui
 ```
-
-If using balenaCloud the ```EUI``` will be visible as a TAG on the device dashboard. Be careful when you copy the tag, as other characters will be copied.
 
 
 ### CUPS and LNS protocols
@@ -374,7 +344,7 @@ You will also have to configure the gateway in The Things Stack CE (also known a
       * Link as Gateway to a Gateway Server for traffic exchange ... 
    * Click **Create API key**.
    * Copy the created API key.
-   * If you are using the LNS protocol, then paste this API key to the `TC_KEY` variable in your `docker-compose.yml` file or on balenaCloud.
+   * If you are using the LNS protocol, then paste this API key to the `TC_KEY` variable in your `docker-compose.yml` file.
 
 
 3. Create an API key for the CUPS protocol (only if using CUPS protocol)
@@ -389,7 +359,7 @@ You will also have to configure the gateway in The Things Stack CE (also known a
       * Edit basic gateway settings
    * Click **Create API key**.
    * Copy the created API key.
-   * Paste this API key to the `CUPS_KEY` variable in your `docker-compose.yml` file or on balenaCloud.
+   * Paste this API key to the `CUPS_KEY` variable in your `docker-compose.yml` file.
 
 More information on these pages:
 * https://www.thethingsindustries.com/docs/gateways/lora-basics-station/lns/
@@ -426,7 +396,7 @@ services:
 
 Remember that when using TTN the `GATEWAY_NAME` and `GATEWAY_ID` must be unique over time (including deleted gateways). 
 
-The autoprovision process is going to create the gateway and a single use `TC_KEY`. The `TC_KEY` will be stored on the mounted `config` volume or inn your Balena Dashboard if used from Balena. If you are not using Balena or you don't have a mounted volume, the `TC_KEY` will be regenerated every time you reboot the service and the previous key will be deleted.
+The autoprovision process is going to create the gateway and a single use `TC_KEY`. The `TC_KEY` will be stored on the mounted `config` volume. If you don't have a mounted volume, the `TC_KEY` will be regenerated every time you reboot the service and the previous key will be deleted.
 
 You might want to change the `TTS_REGION` if not using the european server, set `TTS_TENANT` if using a The Things Clound instance or `SERVER` if using a on-premise instance of The Things Stack.
 

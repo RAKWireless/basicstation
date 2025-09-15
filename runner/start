@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=2.8.4
+VERSION=2.8.5
 
 # -----------------------------------------------------------------------------
 # Colors
@@ -12,13 +12,6 @@ COLOR_ERROR="\e[31m" # red
 COLOR_END="\e[0m"
 
 # -----------------------------------------------------------------------------
-# Load Balena specific methods
-# -----------------------------------------------------------------------------
-
-# shellcheck source=/dev/null
-[[ -n "$BALENA_DEVICE_UUID" ]] && source ./balena.sh
-
-# -----------------------------------------------------------------------------
 # Utils
 # -----------------------------------------------------------------------------
 
@@ -27,20 +20,10 @@ function idle() {
     # Report GATEWAY_EUI if already defined
     [[ -n "${GATEWAY_EUI}" ]] && echo -e "${COLOR_INFO}GATEWAY_EUI: ${GATEWAY_EUI}${COLOR_END}"
     
-    # Halt if Balena, exit after 5 seconds otherwise
-    if [[ -n "$BALENA_DEVICE_UUID" ]]; then 
-   balena-idle 
-    else
-        sleep 5
-        exit 1
-    fi
+    # Exit after 5 seconds otherwise
+    sleep 5
+    exit 1
 
-}
-
-function restart_if_balena() {
-   [[ -n "$BALENA_DEVICE_UUID" ]] && \
-   echo -e "${COLOR_INFO}Service will restart now${COLOR_END}" && \
-   balena-idle 
 }
 
 function create_reset_file {
@@ -244,8 +227,6 @@ function tts_autoprovision() {
     if [[ "$KEY" != "null" ]]; then
         TC_KEY=$KEY
         echo -e "${COLOR_INFO}TC_KEY successfully generated${COLOR_END}"
-        [[ -n "$BALENA_DEVICE_UUID" ]] && balena_set_variable "TC_KEY" "$TC_KEY"
-        restart_if_balena
     fi
 
     echo
@@ -768,12 +749,6 @@ echo -e "${COLOR_INFO}Enable Logic:  ${POWER_EN_LOGIC}${COLOR_END}"
 fi
 
 echo -e ""
-
-# -----------------------------------------------------------------------------
-# Push to Balena
-# -----------------------------------------------------------------------------
-
-[[ -n "$BALENA_DEVICE_UUID" ]] && balena_set_label "EUI" "$GATEWAY_EUI"
 
 # -----------------------------------------------------------------------------
 # Generate dynamic configuration files
