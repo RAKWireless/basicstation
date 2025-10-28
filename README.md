@@ -224,7 +224,7 @@ Variable Name | Value | Description | Default
 **`DEVICE`** | `STRING` or `AUTO` | Where the concentrator is connected to. Set to `AUTO` for auto-discover. | `/dev/spidev0.0` for SPI concentrators, `/dev/ttyUSB0` or `/dev/ttyACM0` for USB concentrators, the host IP port 3333 for `NET` connections
 **`SPI_SPEED`** | `INT` | Speed of the SPI interface | 2000000 (2MHz) for SX1301 concentrators, 8000000 (8Mhz) for the rest
 **`CLKSRC`** | `INT` | Radio index that provides clock to concentrator | 1 for SX1301 concentradors, 0 for the rest 
-**`USE_LIBGPIOD`** | `INT` | Use `libgpiod` (1) instead of default `sysfs` (0) to manage the GPIOs. The former is the recommended but not yet supported on all platforms. | 0 (1 for Raspberry Pi 5)
+**`USE_LIBGPIOD`** | `INT` | Use `sysfs` (0) or `libgpiod` (1) to manage the GPIOs | 1
 **`GPIO_CHIP`** | `STRING` | GPIO ID to use when using libgpiod | `gpiochip0` (`gpiochip4` for Raspberry Pi 5)
 **`RESET_GPIO`** | `INT` | GPIO number that resets (Broadcom pin number, if not defined it's calculated based on the `RESET_PIN`) | 17
 **`POWER_EN_GPIO`** | `INT` | GPIO number that enables power (by pulling HIGH) to the concentrator (Broadcom pin number). 0 means no required. | 0
@@ -760,7 +760,6 @@ services:
       - /dev/gpiochip4
     environment:
       MODEL: "RAK5146"
-      USE_LIBGPIOD: 1
       GPIO_CHIP: "gpiochip4"
 ```
 
@@ -910,7 +909,7 @@ Parsers that used to be available under the `tools` folder have been moved to th
 
 The contents of this repository (not of those repositories linked or used by this one) are under BSD 3-Clause License.
 
-Copyright (c) 2021-2023 Xose Pérez <xose.perez@gmail.com>
+Copyright (c) 2021-2025 Xose Pérez <xose.perez@gmail.com>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

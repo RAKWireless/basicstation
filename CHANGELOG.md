@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.6 (2025-10-28)
+
+* Defaults to use LIBGPIOd (USE_LIBGPIOD=1)
+
 ## 2.8.5 (2025-09-15)
 
 * Remove dependency from balenalib images
